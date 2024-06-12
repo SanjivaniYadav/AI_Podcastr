@@ -17,28 +17,25 @@ const useGeneratePodcast = ({
   voicePrompt,
   setAudioStorageId,
 }: GeneratePodcastProps) => {
-  //Logic for ppodcast generation
-  const [isGenerating, setIsGeneratig] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const { startUpload } = useUploadFiles(generateUploadUrl);
 
-  const getPodcastAudio = useAction(api.openai.genrateAudioAction);
+  const getPodcastAudio = useAction(api.openai.generateAudioAction);
 
   const getAudioUrl = useMutation(api.podcasts.getUrl);
 
   const generatePodcast = async () => {
-    setIsGeneratig(true);
-
+    setIsGenerating(true);
     setAudio("");
 
     if (!voicePrompt) {
       toast({
-        title: "Please Provide a voiceType to generate a podcast",
+        title: "Please provide a voiceType to generate a podcast",
       });
-
-      return setIsGeneratig(false);
+      return setIsGenerating(false);
     }
 
     try {
@@ -58,26 +55,21 @@ const useGeneratePodcast = ({
 
       const audioUrl = await getAudioUrl({ storageId });
       setAudio(audioUrl!);
-      setIsGeneratig(false);
-
+      setIsGenerating(false);
       toast({
         title: "Podcast generated successfully",
       });
     } catch (error) {
-      console.log("Error generating Podcast", error);
+      console.log("Error generating podcast", error);
       toast({
         title: "Error creating a podcast",
         variant: "destructive",
       });
-
-      setIsGeneratig(false);
+      setIsGenerating(false);
     }
   };
 
-  return {
-    isGenerating,
-    generatePodcast,
-  };
+  return { isGenerating, generatePodcast };
 };
 
 const GeneratePodcast = (props: GeneratePodcastProps) => {
