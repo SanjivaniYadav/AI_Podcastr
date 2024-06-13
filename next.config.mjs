@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "sensible-ladybug-306.convex.cloud",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
   },
 };
